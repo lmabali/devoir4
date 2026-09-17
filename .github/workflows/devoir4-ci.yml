@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Installer Python
         uses: actions/setup-python@v5
@@ -24,3 +26,9 @@ jobs:
 
       - name: Lancer les tests avec couverture
         run: pytest --cov=app --cov-report=xml --cov-report=term tests/
+
+      - name: Analyse SonarQube
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
